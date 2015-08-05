@@ -106,10 +106,21 @@ func getBreakDates(params *QueryParams) []string {
 	if startdDate != "" {
 		breakDates = append(breakDates, startdDate)
 	} else if dateStr != "" {
-		breakDates = append(breakDates, dateStr)
+        if !contains(breakDates, dateStr){
+            breakDates = append(breakDates, dateStr)
+        }
 	}
 
 	return breakDates
+}
+
+func contains(slice []string, item string) bool {
+    set := make(map[string]struct{}, len(slice))
+    for _, s := range slice {
+        set[s] = struct{}{}
+    }
+    _, ok := set[item]
+    return ok
 }
 
 /**
@@ -246,6 +257,7 @@ func getQuakesKml(w http.ResponseWriter, r *http.Request) {
 
 		tnz := t.In(NZTzLocation)
 		nzTime := tnz.Format(NZ_KML_TIME_FORMAT)
+
 		exData.AddData(NewData("NZ Standard Time", nzTime))
 
 		if depth.Valid {
@@ -386,6 +398,7 @@ func getQuakesGml(w http.ResponseWriter, r *http.Request) {
 	var b bytes.Buffer
 	eol := []byte("\n")
 	bbox1 := getGmlBbox(params.bbox)
+
 	if bbox1 == "" {
 		bbox1 = GML_BBOX_NZ
 	}

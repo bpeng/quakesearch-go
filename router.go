@@ -7,21 +7,6 @@ import (
 	"strings"
 )
 
-var docs = apidoc.Docs{
-	Production:       config.WebServer.Production,
-	APIHost:          config.WebServer.CNAME,
-	Title:            `GeoNet QuakeSearch API`,
-	Description:      `<p>The QuakeSearch API provides access the New Zealand earthquake catalogue, allows the user to search quakes using temporal, spatial, depth and magnitude constraints.</p>`,
-	RepoURL:          `https://github.com/GeoNet/quakesearch`,
-	StrictVersioning: false,
-}
-
-func init() {
-	// docs.AddEndpoint("site", &siteDoc)
-}
-
-var exHost = "http://localhost:" + config.WebServer.Port
-
 func router(w http.ResponseWriter, r *http.Request) {
 
 	switch {

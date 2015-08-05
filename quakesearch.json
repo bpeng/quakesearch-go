@@ -13,5 +13,8 @@
     "Port": "8081",
     "CNAME": "localhost",
     "Production": false
+  },
+  "Env": {
+    "Prefix": "QUAKESEARCH"
   }
 }

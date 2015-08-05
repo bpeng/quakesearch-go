@@ -9,7 +9,6 @@ import (
 	"net/http"
 )
 
-//go:generate configer fits.json
 var (
 	config = cfg.Load()
 	db     *sql.DB
@@ -45,7 +44,7 @@ func main() {
 	log.Fatal(http.ListenAndServe(":"+config.WebServer.Port, nil))
 }
 
-// handler creates a mux and wraps it with default handlers.  Seperate function to enable testing.
+// handler creates a mux and wraps it with default handlers.
 func handler() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", router)
