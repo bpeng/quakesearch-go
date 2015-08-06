@@ -1,0 +1,23 @@
+{
+	"ImportPath": "github.com/GeoNet/quakesearch",
+	"GoVersion": "go1.4.2",
+	"Deps": [
+		{
+			"ImportPath": "github.com/GeoNet/cfg",
+			"Rev": "76198d1c294c29320882c8626ed185aef602108d"
+		},
+		{
+			"ImportPath": "github.com/GeoNet/metrics",
+			"Rev": "5161e09d1ca5d85798d090752c2f7d5ab9ab6e17"
+		},
+		{
+			"ImportPath": "github.com/GeoNet/web",
+			"Rev": "588a2cfe5e1bba4014838984ba81cbfc3aeb3ca3"
+		},
+		{
+			"ImportPath": "github.com/lib/pq",
+			"Comment": "go1.0-cutoff-47-g93e9980",
+			"Rev": "93e9980741c9e593411b94e07d5bad8cfb4809db"
+		}
+	]
+}

@@ -10,7 +10,7 @@
     "SSLMode": "disable"
   },
   "WebServer": {
-    "Port": "8081",
+    "Port": "8080",
     "CNAME": "localhost",
     "Production": false
   },
