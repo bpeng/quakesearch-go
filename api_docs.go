@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/GeoNet/web"
 	"github.com/GeoNet/web/api/apidoc"
+	"html/template"
 )
 
 const (
@@ -42,6 +43,7 @@ var geojsonD = &apidoc.Query{
 	Example:     "/geojson?bbox=163.60840,-49.18170,182.98828,-32.28713&minmag=2&maxmag=7&mindepth=1&maxdepth=100&startdate=2015-7-5T22:00:00&enddate=2015-8-5T23:00:00",
 	ExampleHost: exHost,
 	URI:         "/geojson?bbox=(bbox)&minmag=(minmag)&maxmag=(maxmag)&mindepth=(mindepth)&maxdepth=(maxdepth)&startdate=(startdate)&enddate=(enddate)",
+	Optional:    QuakesearchParams,
 }
 
 var gmlDoc = apidoc.Endpoint{Title: "GML",
@@ -58,6 +60,7 @@ var gmlD = &apidoc.Query{
 	Example:     "/gml?bbox=163.60840,-49.18170,182.98828,-32.28713&minmag=2&maxmag=7&mindepth=1&maxdepth=100&startdate=2015-7-5T22:00:00&enddate=2015-8-5T23:00:00",
 	ExampleHost: exHost,
 	URI:         "/gml?bbox=(bbox)&minmag=(minmag)&maxmag=(maxmag)&mindepth=(mindepth)&maxdepth=(maxdepth)&startdate=(startdate)&enddate=(enddate)",
+	Optional:    QuakesearchParams,
 }
 
 var kmlDoc = apidoc.Endpoint{Title: "KML",
@@ -74,6 +77,7 @@ var kmlD = &apidoc.Query{
 	Example:     "/kml?bbox=163.60840,-49.18170,182.98828,-32.28713&minmag=2&maxmag=7&mindepth=1&maxdepth=100&startdate=2015-7-5T22:00:00&enddate=2015-8-5T23:00:00",
 	ExampleHost: exHost,
 	URI:         "/kml?bbox=(bbox)&minmag=(minmag)&maxmag=(maxmag)&mindepth=(mindepth)&maxdepth=(maxdepth)&startdate=(startdate)&enddate=(enddate)",
+	Optional:    QuakesearchParams,
 }
 
 var csvDoc = apidoc.Endpoint{Title: "CSV",
@@ -90,4 +94,17 @@ var csvD = &apidoc.Query{
 	Example:     "/csv?bbox=163.60840,-49.18170,182.98828,-32.28713&minmag=2&maxmag=7&mindepth=1&maxdepth=100&startdate=2015-7-5T22:00:00&enddate=2015-8-5T23:00:00",
 	ExampleHost: exHost,
 	URI:         "/csv?bbox=(bbox)&minmag=(minmag)&maxmag=(maxmag)&mindepth=(mindepth)&maxdepth=(maxdepth)&startdate=(startdate)&enddate=(enddate)",
+	Optional:    QuakesearchParams,
+}
+
+var QuakesearchParams = map[string]template.HTML{
+	"bbox":      `The bbox for querying quakes, e.g., <code>170.29907,-45.22074,175.14404,-41.12075</code>.`,
+	"region":    `The region for querying quakes, e.g., <code>canterbury</code>`,
+	"startdate": `The Start date for querying quakes.`,
+	"enddate":   `The End date for querying quakes.`,
+	"maxdepth":  `The max depth for querying quakes.`,
+	"mindepth":  `The minimum depth for querying quakes.`,
+	"maxmag":    `The max magnitude for querying quakes.`,
+	"minmag":    `The min magnitude for querying quakes.`,
+	"limit":     `The maximum bumber of quakes to return.`,
 }

@@ -31,6 +31,9 @@ const (
 	RFC3339_FORMAT      = "2006-01-02T15:04:05.999Z"
 	UTC_KML_TIME_FORMAT = "January 02 2006 at 3:04:05 pm"
 	NZ_KML_TIME_FORMAT  = "Monday, 02 January 2006 at 3:04:05 pm"
+
+	CONTENT_TYPE_XML = "application/xml"
+	CONTENT_TYPE_KML = "application/vnd.google-earth.kml+xml"
 )
 
 var NZTzLocation *time.Location
@@ -106,27 +109,33 @@ func getBreakDates(params *QueryParams) []string {
 	if startdDate != "" {
 		breakDates = append(breakDates, startdDate)
 	} else if dateStr != "" {
-        if !contains(breakDates, dateStr){
-            breakDates = append(breakDates, dateStr)
-        }
+		if !contains(breakDates, dateStr) {
+			breakDates = append(breakDates, dateStr)
+		}
 	}
 
 	return breakDates
 }
 
 func contains(slice []string, item string) bool {
-    set := make(map[string]struct{}, len(slice))
-    for _, s := range slice {
-        set[s] = struct{}{}
-    }
-    _, ok := set[item]
-    return ok
+	set := make(map[string]struct{}, len(slice))
+	for _, s := range slice {
+		set[s] = struct{}{}
+	}
+	_, ok := set[item]
+	return ok
 }
 
 /**
  * get the number of quakes with breaking dates when the number is large
  */
 func getQuakesCount(w http.ResponseWriter, r *http.Request) {
+	//1. check query parameters
+	if err := geojsonD.CheckParams(r.URL.Query()); err != nil {
+		web.BadRequest(w, r, err.Error())
+		return
+	}
+
 	v := r.URL.Query()
 	sqlString := `select count(*) from wfs.quake_search_v1`
 
@@ -169,6 +178,12 @@ func getQuakesCount(w http.ResponseWriter, r *http.Request) {
 * kml?region=canterbury&startdate=2010-6-29T21:00:00&enddate=2015-7-29T22:00:00
  */
 func getQuakesKml(w http.ResponseWriter, r *http.Request) {
+	//1. check query parameters
+	if err := kmlD.CheckParams(r.URL.Query()); err != nil {
+		web.BadRequest(w, r, err.Error())
+		return
+	}
+
 	v := r.URL.Query()
 	sqlString := `select publicid, eventtype, to_char(origintime, 'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"') AS origintime,
      latitude, longitude, depth, depthtype, magnitude, magnitudetype, evaluationmethod, evaluationstatus,
@@ -369,13 +384,19 @@ func getQuakesKml(w http.ResponseWriter, r *http.Request) {
 	b := []byte(kml.Render())
 
 	//w.Header().Set("Content-Type", "application/xml") //test!!
-	w.Header().Set("Content-Type", "application/vnd.google-earth.kml+xml")
+	w.Header().Set("Content-Type", CONTENT_TYPE_KML)
 	w.Header().Set("Content-Disposition", `attachment; filename="earthquakes.kml"`)
 	web.Ok(w, r, &b)
 
 }
 
 func getQuakesGml(w http.ResponseWriter, r *http.Request) {
+	//1. check query parameters
+	if err := gmlD.CheckParams(r.URL.Query()); err != nil {
+		web.BadRequest(w, r, err.Error())
+		return
+	}
+
 	v := r.URL.Query()
 	sqlString := `select publicid, eventtype, to_char(origintime, 'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"') AS origintime,
            latitude, longitude, depth, depthtype, magnitude,  magnitudetype, evaluationmethod, evaluationstatus,
@@ -520,11 +541,16 @@ func getQuakesGml(w http.ResponseWriter, r *http.Request) {
 	b.Write([]byte(`</wfs:FeatureCollection>`))
 
 	// send result response
-	w.Header().Set("Content-Type", "application/xml")
+	w.Header().Set("Content-Type", CONTENT_TYPE_XML)
 	web.OkBuf(w, r, &b)
 }
 
 func getQuakesCsv(w http.ResponseWriter, r *http.Request) {
+	//1. check query parameters
+	if err := csvD.CheckParams(r.URL.Query()); err != nil {
+		web.BadRequest(w, r, err.Error())
+		return
+	}
 	v := r.URL.Query()
 	//21  fields
 	sqlString := `select format('%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s',
@@ -576,6 +602,12 @@ func getQuakesCsv(w http.ResponseWriter, r *http.Request) {
 
 //http://hutl14681.gns.cri.nz:8081/geojson?limit=100&bbox=163.60840,-49.18170,182.98828,-32.28713&startdate=2015-6-27T22:00:00&enddate=2015-7-27T23:00:00
 func getQuakesGeoJson(w http.ResponseWriter, r *http.Request) {
+	//1. check query parameters
+	if err := geojsonD.CheckParams(r.URL.Query()); err != nil {
+		web.BadRequest(w, r, err.Error())
+		return
+	}
+
 	v := r.URL.Query()
 	sqlString := `select publicid, eventtype, to_char(origintime, 'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"') AS origintime,
               depth, depthtype, magnitude, magnitudetype, evaluationmethod, evaluationstatus,

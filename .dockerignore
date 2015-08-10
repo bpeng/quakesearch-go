@@ -8,4 +8,5 @@ etc
 prod
 *_test.go
 *test.json
+test_db
 docker-run.sh

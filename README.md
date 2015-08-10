@@ -22,6 +22,21 @@ query parameters: date, location, depth/magnitude
 * result as url(s) for intended data, also button to download data from browser.
 * the maximum number of quakes for each request is limited to 20,000 (to prevent server crash), beyond that multiple requests are suggested.
 
+## Test
+
+Build/run docker image for test database
+
+```
+cd test_db
+sudo docker build  -t 'quakesearch_db' .
+sudo docker run --name quakesearch_db -p 5432:5432  -i -d -t quakesearch_db
+```
+
+Run test
+```
+godep go test
+```
+
 ## Build / Deployment
 
 
