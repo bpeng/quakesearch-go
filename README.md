@@ -43,14 +43,7 @@ godep go test
 ### Configuration
 config parameters can be specified in ```quakesearch.json```  which can be copied to ```/etc/sysconfig/ ```
 
-config parameters can also be specified as environment variables which will overwrite the above config file:
-```
-export QUAKESEARCH_DATABASE_HOST=localhost
-export QUAKESEARCH_DATABASE_NAME=hazard
-export QUAKESEARCH_DATABASE_USER=hazard_r
-export QUAKESEARCH_DATABASE_PASSWORD=####
-export QUAKESEARCH_WEB_SERVER_PORT=8080
-```
+config parameters can also be specified as environment variables which will overwrite the above config file, see ```docker-run.sh```
 
 ### GO
 ```

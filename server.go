@@ -9,6 +9,7 @@ import (
 	"net/http"
 )
 
+//go:generate configer quakesearch.json
 var (
 	config = cfg.Load()
 	db     *sql.DB
