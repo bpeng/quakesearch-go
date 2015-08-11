@@ -24,12 +24,11 @@ query parameters: date, location, depth/magnitude
 
 ## Test
 
-Build/run docker image for test database
+init test database
 
 ```
 cd test_db
-sudo docker build  -t 'quakesearch_db' .
-sudo docker run --name quakesearch_db -p 5432:5432  -i -d -t quakesearch_db
+./initdb.sh
 ```
 
 Run test
