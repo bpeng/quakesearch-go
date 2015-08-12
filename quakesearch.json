@@ -16,5 +16,13 @@
   },
   "Env": {
     "Prefix": "QUAKESEARCH"
+  },
+  "Librato": {
+    "User": "",
+    "Key": "",
+    "Source": ""
+  },
+  "Logentries": {
+    "Token": ""
   }
 }

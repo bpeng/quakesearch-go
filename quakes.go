@@ -424,16 +424,16 @@ func getQuakesGml(w http.ResponseWriter, r *http.Request) {
 		bbox1 = GML_BBOX_NZ
 	}
 	b.Write([]byte(`<?xml version="1.0" encoding="UTF-8"?>
-           <wfs:FeatureCollection xmlns:wfs="http://www.opengis.net/wfs"
-           xmlns:gml="http://www.opengis.net/gml"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xmlns:geonet="http://geonet.org.nz"
-           xsi:schemaLocation="http://geonet.org.nz http://geonet.org.nz/quakes http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.0.0/WFS-basic.xsd">
-           <gml:boundedBy>
-              <gml:Box srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
-                  <gml:coordinates decimal="." cs="," ts=" ">` + bbox1 + `</gml:coordinates>
-              </gml:Box>
-           </gml:boundedBy>`))
+    <wfs:FeatureCollection xmlns:wfs="http://www.opengis.net/wfs"
+     xmlns:gml="http://www.opengis.net/gml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xmlns:geonet="http://geonet.org.nz"
+     xsi:schemaLocation="http://geonet.org.nz http://geonet.org.nz/quakes http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.0.0/WFS-basic.xsd">
+     <gml:boundedBy>
+       <gml:Box srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+          <gml:coordinates decimal="." cs="," ts=" ">` + bbox1 + `</gml:coordinates>
+       </gml:Box>
+     </gml:boundedBy>`))
 	b.Write(eol)
 
 	for rows.Next() {
@@ -472,69 +472,69 @@ func getQuakesGml(w http.ResponseWriter, r *http.Request) {
 			web.ServiceUnavailable(w, r, err)
 			return
 		}
-		b.Write([]byte(`<gml:featureMember>`))
-		b.Write([]byte(fmt.Sprintf(`<geonet:quake fid="quake.%s">`, publicid)))
+		b.Write([]byte("<gml:featureMember>\n"))
+		b.Write([]byte(fmt.Sprintf("<geonet:quake fid=\"quake.%s\">\n", publicid)))
 		//
-		b.Write([]byte(fmt.Sprintf(`<gml:boundedBy>%s</gml:boundedBy>`, gml)))
+		b.Write([]byte(fmt.Sprintf("<gml:boundedBy>%s</gml:boundedBy>\n", gml)))
 
-		b.Write([]byte(fmt.Sprintf(`<geonet:publicid>%s</geonet:publicid>`, publicid)))
-		b.Write([]byte(fmt.Sprintf(`<geonet:origintime>%s</geonet:origintime>`, origintime)))
-		b.Write([]byte(fmt.Sprintf("<geonet:latitude>%g</geonet:latitude>", latitude)))
-		b.Write([]byte(fmt.Sprintf(`<geonet:longitude>%g</geonet:longitude>`, longitude)))
+		b.Write([]byte(fmt.Sprintf("<geonet:publicid>%s</geonet:publicid>\n", publicid)))
+		b.Write([]byte(fmt.Sprintf("<geonet:origintime>%s</geonet:origintime>\n", origintime)))
+		b.Write([]byte(fmt.Sprintf("<geonet:latitude>%g</geonet:latitude>\n", latitude)))
+		b.Write([]byte(fmt.Sprintf("<geonet:longitude>%g</geonet:longitude>\n", longitude)))
 		if eventtype.Valid {
-			b.Write([]byte(fmt.Sprintf(`<geonet:eventtype>%s</geonet:eventtype>`, eventtype.String)))
+			b.Write([]byte(fmt.Sprintf("<geonet:eventtype>%s</geonet:eventtype>\n", eventtype.String)))
 		}
 		if modificationtime.Valid {
-			b.Write([]byte(fmt.Sprintf(`<geonet:modificationtime>%s</geonet:modificationtime>`, modificationtime.String)))
+			b.Write([]byte(fmt.Sprintf("<geonet:modificationtime>%s</geonet:modificationtime>\n", modificationtime.String)))
 		}
 		if depth.Valid {
-			b.Write([]byte(fmt.Sprintf(`<geonet:depth>%g</geonet:depth>`, depth.Float64)))
+			b.Write([]byte(fmt.Sprintf("<geonet:depth>%g</geonet:depth>\n", depth.Float64)))
 		}
 		if depthtype.Valid {
-			b.Write([]byte(fmt.Sprintf(`<geonet:depthtype>%s</geonet:depthtype>`, depthtype.String)))
+			b.Write([]byte(fmt.Sprintf("<geonet:depthtype>%s</geonet:depthtype>\n", depthtype.String)))
 		}
 		if magnitude.Valid {
-			b.Write([]byte(fmt.Sprintf(`<geonet:magnitude>%g</geonet:magnitude>`, magnitude.Float64)))
+			b.Write([]byte(fmt.Sprintf("<geonet:magnitude>%g</geonet:magnitude>\n", magnitude.Float64)))
 		}
 		if magnitudetype.Valid {
-			b.Write([]byte(fmt.Sprintf(`<geonet:magnitudetype>%s</geonet:magnitudetype>`, magnitudetype.String)))
+			b.Write([]byte(fmt.Sprintf("<geonet:magnitudetype>%s</geonet:magnitudetype>\n", magnitudetype.String)))
 		}
 		if evaluationmethod.Valid {
-			b.Write([]byte(fmt.Sprintf(`<geonet:evaluationmethod>%s</geonet:evaluationmethod>`, evaluationmethod.String)))
+			b.Write([]byte(fmt.Sprintf("<geonet:evaluationmethod>%s</geonet:evaluationmethod>\n", evaluationmethod.String)))
 		}
 		if evaluationstatus.Valid {
-			b.Write([]byte(fmt.Sprintf(`<geonet:evaluationstatus>%s</geonet:evaluationstatus>`, evaluationstatus.String)))
+			b.Write([]byte(fmt.Sprintf("<geonet:evaluationstatus>%s</geonet:evaluationstatus>\n", evaluationstatus.String)))
 		}
 		if evaluationmode.Valid {
-			b.Write([]byte(fmt.Sprintf(`<geonet:evaluationmode>%s</geonet:evaluationmode>`, evaluationmode.String)))
+			b.Write([]byte(fmt.Sprintf("<geonet:evaluationmode>%s</geonet:evaluationmode>\n", evaluationmode.String)))
 		}
 		if earthmodel.Valid {
-			b.Write([]byte(fmt.Sprintf(`<geonet:earthmodel>%s</geonet:earthmodel>`, earthmodel.String)))
+			b.Write([]byte(fmt.Sprintf("<geonet:earthmodel>%s</geonet:earthmodel>\n", earthmodel.String)))
 		}
 		if usedphasecount.Valid {
-			b.Write([]byte(fmt.Sprintf(`<geonet:usedphasecount>%d</geonet:usedphasecount>`, usedphasecount.Int64)))
+			b.Write([]byte(fmt.Sprintf("<geonet:usedphasecount>%d</geonet:usedphasecount>\n", usedphasecount.Int64)))
 		}
 		if usedstationcount.Valid {
-			b.Write([]byte(fmt.Sprintf(`<geonet:usedstationcount>%d</geonet:usedstationcount>`, usedstationcount.Int64)))
+			b.Write([]byte(fmt.Sprintf("<geonet:usedstationcount>%d</geonet:usedstationcount>\n", usedstationcount.Int64)))
 		}
 		if minimumdistance.Valid {
-			b.Write([]byte(fmt.Sprintf(`<geonet:minimumdistance>%g</geonet:minimumdistance>`, minimumdistance.Float64)))
+			b.Write([]byte(fmt.Sprintf("<geonet:minimumdistance>%g</geonet:minimumdistance>\n", minimumdistance.Float64)))
 		}
 		if azimuthalgap.Valid {
-			b.Write([]byte(fmt.Sprintf(`<geonet:azimuthalgap>%g</geonet:azimuthalgap>`, azimuthalgap.Float64)))
+			b.Write([]byte(fmt.Sprintf("<geonet:azimuthalgap>%g</geonet:azimuthalgap>\n", azimuthalgap.Float64)))
 		}
 		if magnitudeuncertainty.Valid {
-			b.Write([]byte(fmt.Sprintf(`<geonet:magnitudeuncertainty>%g</geonet:magnitudeuncertainty>`, magnitudeuncertainty.Float64)))
+			b.Write([]byte(fmt.Sprintf("<geonet:magnitudeuncertainty>%g</geonet:magnitudeuncertainty>\n", magnitudeuncertainty.Float64)))
 		}
 		if originerror.Valid {
-			b.Write([]byte(fmt.Sprintf(`<geonet:originerror>%g</geonet:originerror>`, originerror.Float64)))
+			b.Write([]byte(fmt.Sprintf("<geonet:originerror>%g</geonet:originerror>\n", originerror.Float64)))
 		}
 		if magnitudestationcount.Valid {
-			b.Write([]byte(fmt.Sprintf(`<geonet:magnitudestationcount>%d</geonet:magnitudestationcount>`, magnitudestationcount.Int64)))
+			b.Write([]byte(fmt.Sprintf("<geonet:magnitudestationcount>%d</geonet:magnitudestationcount>\n", magnitudestationcount.Int64)))
 		}
 		//geonet:origin_geom
-		b.Write([]byte(fmt.Sprintf(`<geonet:origin_geom>%s</geonet:origin_geom>`, gml)))
-		b.Write([]byte(`</geonet:quake></gml:featureMember>`))
+		b.Write([]byte(fmt.Sprintf("<geonet:origin_geom>%s</geonet:origin_geom>\n", gml)))
+		b.Write([]byte("</geonet:quake></gml:featureMember>\n"))
 	}
 
 	rows.Close()
