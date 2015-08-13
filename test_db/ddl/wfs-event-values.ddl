@@ -1,0 +1,3 @@
+ select wfs.add_event('1542894','earthquake', '1946-08-25 20:24:46'::timestamptz,  '1982-01-28 00:00:00'::timestamptz, -40.59, 174.2, 12, 3.9, 'LOCAL', 'reviewed', NULL, 'nz1d', 'operator assigned', 0.2, 5, 3, 0.809, 208, 'ML', 0.283, 2 );
+ select wfs.add_event('3366146','earthquake', '2010-09-03 16:35:41'::timestamptz,  '2013-01-15 09:32:00'::timestamptz, -43.52731, 172.16794, 11.0426, 7.1, 'GROPE', 'reviewed', NULL, 'nz1d', 'operator assigned', 0.14312, 21, 16, 0.06, 82, 'ML', 0.13, 3 );
+ select wfs.add_event('2190619','earthquake', '2003-08-21 16:50:04'::timestamptz,  '2010-01-13 22:14:00'::timestamptz, -45.03076, 167.09016, 20, 5.003, 'GROPE', 'reviewed', NULL, 'nz1d', 'operator assigned', 0.79328, 11, 8, 0.59, 274, 'ML', 0.159, 8 );
