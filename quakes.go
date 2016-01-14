@@ -45,6 +45,7 @@ func init() {
 		NZTzLocation = l
 	} else {
 		NZTzLocation = time.Local
+		log.Println("Unable to get NZ timezone, use local time instead!")
 	}
 }
 
@@ -264,6 +265,8 @@ func getQuakesKml(w http.ResponseWriter, r *http.Request) {
 		t, err := time.Parse(RFC3339_FORMAT, origintime)
 		if err != nil {
 			log.Panic("time format error", err)
+			web.ServiceUnavailable(w, r, err)
+			return
 		}
 
 		tu := t.In(time.UTC)

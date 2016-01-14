@@ -14,13 +14,8 @@ import (
 var (
 	config = cfg.Load()
 	db     *sql.DB
+	header web.Header
 )
-
-var header = web.Header{
-	Cache:     web.MaxAge300,
-	Surrogate: web.MaxAge300,
-	Vary:      "Accept",
-}
 
 func init() {
 	logentries.Init(config.Logentries.Token)

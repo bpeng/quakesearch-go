@@ -6,12 +6,10 @@ import (
 	"fmt"
 	"math"
 	"strings"
-	"sync"
 )
 
 const (
 	ICON_LEGEND_IMG_URL = "http://static.geonet.org.nz/geonet-2.0.3/images/kml/"
-	//TODO this image is no longer available
 	GEONET_LOGO_IMG_URL = "http://static.geonet.org.nz/geonet-2.0.3/images/logo-gns.png"
 )
 
@@ -37,12 +35,6 @@ func NewKML(doc *Folder) *KML {
 	return &KML{doc}
 }
 
-// AddFeature adds a feature (Placemark, another folder, etc.) to
-// the KML document.
-func (k *KML) AddFeature(feature renderable) {
-	k.rootFolder.AddFeature(feature)
-}
-
 // Renders the entire KML document.
 func (k *KML) Render() string {
 	ret := "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
@@ -64,13 +56,12 @@ type Folder struct {
 	tagName    string
 	attributes string
 	features   []renderable
-	mutex      *sync.Mutex
 }
 
 // Returns a pointer to a new Folder instance.
 func NewFolder(name string, attr string) *Folder {
 	f := make([]renderable, 0, 10)
-	return &Folder{name, attr, f, new(sync.Mutex)}
+	return &Folder{name, attr, f}
 }
 
 // Returns a pointer to a new Folder instance.
@@ -86,15 +77,8 @@ func NewDocument(name string, open string, desc string) *Folder {
 // the Folder.
 func (f *Folder) AddFeature(feature renderable) {
 	if feature != nil {
-		f.mutex.Lock()
 		f.features = append(f.features, feature)
-		f.mutex.Unlock()
 	}
-}
-func (f *Folder) addAttribute(attr string) {
-	f.mutex.Lock()
-	f.attributes += attr
-	f.mutex.Unlock()
 }
 
 func (f *Folder) render() string {
@@ -110,17 +94,10 @@ func (f *Folder) render() string {
 type SimpleFolder struct {
 	TagName    string
 	Attributes string
-	mutex      *sync.Mutex
 }
 
 func NewSimpleFolder(tag string, attr string) *SimpleFolder {
-	return &SimpleFolder{tag, attr, new(sync.Mutex)}
-}
-
-func (sf *SimpleFolder) addAttribute(attr string) {
-	sf.mutex.Lock()
-	sf.Attributes += attr
-	sf.mutex.Unlock()
+	return &SimpleFolder{tag, attr}
 }
 
 func (sf *SimpleFolder) render() string {
@@ -243,19 +220,16 @@ func (ic *Icon) render() string {
 type StyleMap struct {
 	id    string
 	pairs []renderable
-	mutex *sync.Mutex
 }
 
 func NewStyleMap(name string) *StyleMap {
 	p := make([]renderable, 0, 10)
-	return &StyleMap{name, p, new(sync.Mutex)}
+	return &StyleMap{name, p}
 }
 
 func (st *StyleMap) AddPair(pair renderable) {
 	if pair != nil {
-		st.mutex.Lock()
 		st.pairs = append(st.pairs, pair)
-		st.mutex.Unlock()
 	}
 }
 
@@ -330,20 +304,17 @@ type Placemark struct {
 }
 
 type ExtendedData struct {
-	data  []renderable
-	mutex *sync.Mutex
+	data []renderable
 }
 
 func NewExtendedData() *ExtendedData {
 	nd := make([]renderable, 0, 10)
-	return &ExtendedData{nd, new(sync.Mutex)}
+	return &ExtendedData{nd}
 }
 
 func (ex *ExtendedData) AddData(newdata renderable) {
 	if newdata != nil {
-		ex.mutex.Lock()
 		ex.data = append(ex.data, newdata)
-		ex.mutex.Unlock()
 	}
 }
 
